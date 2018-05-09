@@ -21,6 +21,11 @@ struct Card {
         return identifierFactory
     }
     
+    mutating func resetInitialStateOfCard() {
+        self.isFaceUp = false
+        self.isMatched = false
+    }
+    
     init() {
         self.identifier = Card.getUniqueIdentifier()
     }

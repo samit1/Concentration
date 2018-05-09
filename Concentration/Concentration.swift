@@ -38,14 +38,44 @@ class Concentration {
         }
     }
     
- ////hello
+    func resetCards() {
+        for card in cards.indices {
+            cards[card].resetInitialStateOfCard()
+        }
+        shuffleCards()
+    }
+    
     init(numberOfPairsOfCards: Int) {
         for _ in 1...numberOfPairsOfCards {
             let card = Card()
             cards += [card,card]
         }
+        
+        shuffleCards()
     }
     
-    // TODO: Shuffle the cards
+    // Shuffle the cards randomly in place
+    private func shuffleCards() {
+        print(cards)
+        // begin checking at end of index
+        var index = cards.count - 1
+        print(cards.count)
+        // check until the first element.
+        while index > 0 {
+            
+            // create a random integer between 0 and the index we are incrementing over
+            // no need to check for 0 because the index will never be 0
+            // because this is already checked in the while loop
+            let randint = Int(arc4random_uniform(UInt32(index)))
+            print(randint)
+            let tmp = cards[index] //hold the index of the looping card in a temp variable
+            cards[index] = cards[randint]
+            cards[randint] = tmp
+            
+            index -= 1
+        }
+        print(cards)
+    }
+    
     
 }
