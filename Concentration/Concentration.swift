@@ -10,8 +10,10 @@ import Foundation
 
 class Concentration {
     var cards = [Card]()
-    private var flipCount = 0
+    private var flipCount = 0, score = 0 
     private var indexOfOneAndOnlyFaceUpCard: Int?
+    private var previouslyFlippedCards = [Int:Card]()
+//    private var score = 0
     //if card is chosen flip face up or face down
     //3 cases
     // no cards are face up
@@ -77,6 +79,14 @@ class Concentration {
         return flipCount
     }
     
+    private func setScoreCount(to int: Int) {
+        score = 0
+    }
+    
+    func getScoreCount() -> Int {
+        return score
+    }
+    
     
     //we add the same card in twice
     //so the two cards have the same identifier
@@ -85,7 +95,6 @@ class Concentration {
             let card = Card()
             cards += [card,card]
         }
-        
         shuffleCards()
     }
     
@@ -108,8 +117,7 @@ class Concentration {
         }
     }
     
-    private var previouslyFlippedCards = [Int:Card]()
-    private var score = 0
+
     private func adjustGameScore(flipType: flipTypes) {
         switch flipType {
             

@@ -142,12 +142,20 @@
                                     <action selector="resetGame:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tdv-Mp-5cz"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Score" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lcb-7f-QbB">
+                                <rect key="frame" x="16" y="581" width="256" height="110"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="50"/>
+                                <color key="textColor" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="flipCountLabel" destination="phZ-V2-qdr" id="rSJ-ff-C2Z"/>
+                        <outlet property="scoreLabel" destination="Lcb-7f-QbB" id="h1a-ON-nxe"/>
                         <outletCollection property="cardButtons" destination="iO3-mS-QNd" collectionClass="NSMutableArray" id="OkZ-zq-ZVU"/>
                         <outletCollection property="cardButtons" destination="hrC-hQ-u2v" collectionClass="NSMutableArray" id="DmI-fR-Wd2"/>
                         <outletCollection property="cardButtons" destination="RdQ-D2-f59" collectionClass="NSMutableArray" id="vKx-TI-g3V"/>

@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     lazy var game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1) / 2)
     
     @IBOutlet weak var flipCountLabel: UILabel!
+    @IBOutlet weak var scoreLabel: UILabel!
     
     @IBOutlet var cardButtons: [UIButton]!
     
@@ -38,8 +39,13 @@ class ViewController: UIViewController {
         
     }
     func updateViewFromModel() {
-        flipCountLabel.text = "Flips \(game.getFlipCount())"
-        
+        flipCountLabel.text = "Flips: \(game.getFlipCount())"
+        scoreLabel.text = "Score: \(game.getScoreCount())"
+        updateFlipColors()
+
+    }
+    
+    private func updateFlipColors() {
         for index in cardButtons.indices {
             let button = cardButtons[index]
             let card = game.cards[index]
