@@ -60,21 +60,9 @@ class ViewController: UIViewController {
         }
     }
     
-    private var availableGameThemes = [
-        "halloween" : ["🎃", "👻","😈","👺","🤡","👽"],
-        "cats" : ["😺", "😹","😻","😼","😽","🙀"],
-        "cars" : ["🚗", "🚕","🚙","🚌","🚎","🏎"]
-    ]
-    
-    private var backgroundTheme = [
-        "halloween" : UIColor.orange,
-        "cats" : UIColor.orange,
-        "cars" : UIColor.black
-     ]
-    
     // choose index for random theme
     private func chooseTheme() -> Theme  {
-        let randIndex = Int(arc4random_uniform(UInt32(availableGameThemes.count)))
+        let randIndex = Int(arc4random_uniform(UInt32(themes.count)))
         return themes[randIndex]
     }
     
