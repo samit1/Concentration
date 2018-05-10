@@ -49,7 +49,7 @@ class Concentration {
             
             if resultedInMatch {
                 adjustGameScore(flipType: flipTypes.flipMatched)
-            } else if !resultedInMatch && previouslyFlippedCards[index] != nil {
+            } else if !resultedInMatch && previouslyFlippedCards[index] != nil && indexOfOneAndOnlyFaceUpCard != index {
                 adjustGameScore(flipType: flipTypes.flipPreviouslySeen)
             }
             previouslyFlippedCards[index] = cards[index]
@@ -63,6 +63,7 @@ class Concentration {
         resetCards()
         shuffleCards()
         setFlipCount(to: 0)
+        setScoreCount(to: 0)
     }
     
     private func resetCards() {
