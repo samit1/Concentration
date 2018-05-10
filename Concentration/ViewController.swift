@@ -12,32 +12,34 @@ class ViewController: UIViewController {
     lazy var game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1) / 2)
     
     @IBOutlet weak var flipCountLabel: UILabel!
-
-    private var flipCount = 0 {
-        didSet {
-            flipCountLabel.text = "Flips: \(flipCount)"
-        }
-    }
-    
     
     @IBOutlet var cardButtons: [UIButton]!
     
     @IBAction func touchCard(_ sender: UIButton) {
-        flipCount += 1
         if let cardNumber = cardButtons.index(of: sender) {
             game.chooseCard(at: cardNumber)
             updateViewFromModel()
-            print("cardNumber = \(cardNumber)")
-        } else {print("Chosen card was not in cardButtons") }
+        }
     }
     
     @IBAction func resetGame(_ sender: UIButton) {
-        game.resetCards()
+        // let Concentration know the reset was pressed
+        // so it can update its intrnal state
+        game.resetGame()
+        
+        // update view
         updateViewFromModel()
-        flipCount = 0
+        
+        // reset dictionary
+        emoji = [:]
+        
+        // set the theme to nil
+        emojisToDisplay = nil
         
     }
     func updateViewFromModel() {
+        flipCountLabel.text = "Flips \(game.getFlipCount())"
+        
         for index in cardButtons.indices {
             let button = cardButtons[index]
             let card = game.cards[index]
@@ -52,15 +54,39 @@ class ViewController: UIViewController {
         }
     }
     
-    var emojoChoices = ["🎃", "👻", "🎃", "👻", "💀","👽"]
+    var availableGameThemes = [
+        ["🎃", "👻","😈","👺","🤡","👽"],
+        ["😺", "😹","😻","😼","😽","🙀"],
+        ["🚗", "🚕","🚙","🚌","🚎","🏎"]
+    ]
     
+    
+    // choose a random theme
+    private func chooseTheme() -> [String]  {
+        let randIndex = Int(arc4random_uniform(UInt32(availableGameThemes.count)))
+        return availableGameThemes[randIndex]
+    }
+    
+    // a new game theme is loaded each game
+    // since this is being implemented without the viewDidLoad method
+    // then we will make the themeIndex optional
+    // if it is set, that means the game theme has been chosen
+    var emojisToDisplay: [String]?
+    
+    
+    // contains the dictionary of what has already been displayed
     var emoji = [Int: String]()
     
-    func emoji(for card: Card) -> String {
-        if emoji[card.identifier] == nil, emojoChoices.count > 0 {
+    private func emoji(for card: Card) -> String {
+        
+        // if the theme has not been set yet
+        // then set the emojis to display
+        emojisToDisplay = emojisToDisplay ?? chooseTheme()
+        
+        if emoji[card.identifier] == nil, emojisToDisplay!.count > 0 {
             
-                let randomIndex = Int(arc4random_uniform(UInt32(emojoChoices.count)))
-                emoji[card.identifier] = emojoChoices.remove(at: randomIndex)
+            let randomIndex = Int(arc4random_uniform(UInt32(emojisToDisplay!.count)))
+            emoji[card.identifier] = emojisToDisplay!.remove(at: randomIndex)
             
         }
         return emoji[card.identifier] ?? "?"
