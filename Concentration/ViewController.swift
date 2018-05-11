@@ -9,21 +9,32 @@
 import UIKit
 
 class ViewController: UIViewController {
-    private lazy var game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1) / 2)
-    private var theme: Theme?
-    @IBOutlet weak var flipCountLabel: UILabel!
-    @IBOutlet weak var scoreLabel: UILabel!
+    private lazy var game = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
     
-    @IBOutlet var cardButtons: [UIButton]!
+    var numberOfPairsOfCards:Int {
+        get {
+            return (cardButtons.count + 1) / 2
+        }
+    }
     
-    @IBAction func touchCard(_ sender: UIButton) {
+    private  var theme: Theme?
+    @IBOutlet private weak var flipCountLabel: UILabel! {
+        didSet {
+            updateFlipCountLabel()
+        }
+    }
+    @IBOutlet private weak var scoreLabel: UILabel!
+    
+    @IBOutlet private var cardButtons: [UIButton]!
+    
+    @IBAction private func touchCard(_ sender: UIButton) {
         if let cardNumber = cardButtons.index(of: sender) {
             game.chooseCard(at: cardNumber)
             updateViewFromModel()
         }
     }
     
-    @IBAction func resetGame(_ sender: UIButton) {
+    @IBAction private func resetGame(_ sender: UIButton) {
         // let Concentration know the reset was pressed
         // so it can update its intrnal state
         game.resetGame()
@@ -39,10 +50,21 @@ class ViewController: UIViewController {
         
     }
     private func updateViewFromModel() {
-        flipCountLabel.text = "Flips: \(game.getFlipCount())"
+        updateFlipCountLabel()
         scoreLabel.text = "Score: \(game.getScoreCount())"
         updateFlipColors()
-
+    }
+    
+    
+    private func updateFlipCountLabel() {
+        let attributes : [NSAttributedStringKey:Any] = [
+            .strokeWidth : 5.0,
+            .strokeColor : UIColor.orange
+        ]
+        let attributedString = NSAttributedString(string: "Flips: \(game.getFlipCount())", attributes: attributes)
+        
+        
+        flipCountLabel.attributedText = attributedString
     }
     
     private func updateFlipColors() {
@@ -101,7 +123,7 @@ class ViewController: UIViewController {
     
     
     // contains the dictionary of what has already been displayed
-    private var emoji = [Int: String]()
+    private var emoji = [Card: String]()
     
     private func emoji(for card: Card) -> String {
         
@@ -110,15 +132,24 @@ class ViewController: UIViewController {
         theme = theme ?? chooseTheme()
 //        emojisToDisplay = emojisToDisplay ?? chooseTheme()
         
-        if emoji[card.identifier] == nil, (theme?.emojis.count)! > 0 {
-            
-            let randomIndex = Int(arc4random_uniform(UInt32(theme!.emojis.count)))
-            emoji[card.identifier] = theme?.emojis.remove(at: randomIndex)
+        if emoji[card] == nil, (theme?.emojis.count)! > 0 {
+            let randomIndex = theme?.emojis.count.arc4random
+            emoji[card] = theme?.emojis.remove(at: randomIndex!)
             
         }
-        return emoji[card.identifier] ?? "?"
+        return emoji[card] ?? "?"
     }
-    
-    
 }
 
+extension Int {
+    var arc4random : Int {
+        if self > 0 {
+            return Int(arc4random_uniform(UInt32(self)))
+        } else if self < 0 {
+            return -Int(arc4random_uniform(UInt32(self)))
+        } else {
+            return 0
+        }
+        
+    }
+}
